@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "phone": "07032145698",
+      "password": "cehaz",
+      "profile": [
+        {
+          "name": "Cesare Haz",
+          "email": "cesarehaz@gmail.com",
+          "address": "Bankole Street",
+          "image_url": "assets/images/person_cesare.jpeg"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "phone": "07032145698",
+      "password": "khanj",
+      "profile": [
+        {
+          "name": "Joe Khan",
+          "email": "joekhan@gmail.com",
+          "address": "Eze Street",
+          "image_url": "assets/images/person_joe.jpeg"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "phone": "07032145698",
+      "password": "kentz",
+      "profile": [
+        {
+          "name": "Ken Katz",
+          "email": "kenkay@gmail.com",
+          "address": "Umu Street",
+          "image_url": "assets/images/person_katz.jpeg"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "phone": "07032145698",
+      "password": "wezle",
+      "profile": [
+        {
+          "name": "Aukenshire Wesley",
+          "email": "shireley@gmail.com",
+          "address": "Weisel Street",
+          "image_url": "assets/images/person_crispy.png"
+        }
+      ]
+    }
+  ]
+}

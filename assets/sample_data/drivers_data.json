@@ -1,0 +1,67 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "profile": [
+        {
+          "name": "Sasuke Yoriichi",
+          "email": "sasumo@gmail.com",
+          "address": "Allen Street",
+          "phone": "07032145698",
+          "image_url": "assets/images/person_cesare.jpeg"
+        }
+      ],
+      "car_details": [
+        {
+          "model": "Toyota",
+          "make": "Camry",
+          "type": "Salon",
+          "color": "Red",
+          "plate_no": "SQL-101CB"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "profile": [
+        {
+          "name": "Zoro Akaza",
+          "email": "zoroz@gmail.com",
+          "address": "Barry Street",
+          "phone": "07032145698",
+          "image_url": "assets/images/person_cesare.jpeg"
+        }
+      ],
+      "car_details": [
+        {
+          "model": "Honda",
+          "make": "Civic",
+          "type": "Sedan",
+          "color": "Blue",
+          "plate_no": "DBA-101CB"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "profile": [
+        {
+          "name": "Byagugan Jared",
+          "email": "beejay@gmail.com",
+          "address": "Logue Street",
+          "phone": "07032145698",
+          "image_url": "assets/images/person_cesare.jpeg"
+        }
+      ],
+      "car_details": [
+        {
+          "model": "Hyundai",
+          "make": "Sonata",
+          "type": "Salon",
+          "color": "Black",
+          "plate_no": "CAC-101CB"
+        }
+      ]
+    }
+  ]
+}

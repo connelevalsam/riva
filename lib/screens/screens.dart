@@ -1,0 +1,11 @@
+export 'auth/login.dart';
+export 'auth/register_details.dart';
+export 'auth/register_otp.dart';
+export 'auth/register_password.dart';
+export 'auth/register_phone.dart';
+export 'confirm_pickup.dart';
+export 'end_trip.dart';
+export 'home.dart';
+export 'intro.dart';
+export 'request_pickup.dart';
+export 'start_trip.dart';
