@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AppData extends ChangeNotifier {
   double _currentLatitude = 0.0;
@@ -9,6 +10,8 @@ class AppData extends ChangeNotifier {
   String _currentAddressID = "";
   String _destinationAddress = "";
   String _destinationAddressID = "";
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   get currentLatitude => _currentLatitude;
   get currentLongitude => _currentLongitude;
@@ -18,6 +21,8 @@ class AppData extends ChangeNotifier {
 
   get currentAddress => _currentAddress;
   get destinationAddress => _destinationAddress;
+
+  get flutterLocalNotificationsPlugin => _flutterLocalNotificationsPlugin;
 
   void setCurrentLocation(double? lat, double? long) {
     _currentLatitude = lat!;
@@ -46,6 +51,43 @@ class AppData extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void initNotification(var initializationSettings) {
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    notifyListeners();
+  }
+
+  Future showNotifications(
+    String channelID,
+    String channelName,
+    String notificationFor,
+    String popUpTitle,
+    String popUpMessage,
+  ) async {
+    // Show a notification after every 15 minute with the first
+    // appearance happening a minute after invoking the method
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      channelID,
+      channelName,
+      channelDescription: notificationFor,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
+    // initialise channel platform for both Android and iOS device.
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      popUpTitle,
+      popUpMessage,
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
   }
 
   void cleanup() {

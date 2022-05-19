@@ -34,7 +34,7 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   List images = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+    'https://images.unsplash.com/photo-1514041181368-bca62cceffcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80',
     'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
     'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80'
   ];
@@ -81,9 +81,8 @@ class _IntroScreenState extends State<IntroScreen> {
         ),
         pages: [
           PageViewModel(
-            title: "Fractional shares",
-            body:
-                "Instead of having to buy an entire share, invest any amount you want.",
+            title: "Best way to share ride",
+            body: "You can easily share ride and ride's details",
             image: _buildImage(images[0]),
             decoration: pageDecoration,
           ),
@@ -170,7 +169,7 @@ class _IntroScreenState extends State<IntroScreen> {
             : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
         dotsDecorator: const DotsDecorator(
           size: Size(10.0, 10.0),
-          color: Color(0xFFBDBDBD),
+          color: Color(0xFFFDFDFF),
           activeSize: Size(22.0, 10.0),
           activeShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25.0)),

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'provider.dart';
 
 class PlacesHelper {
-  final apiKey = "";
+  final apiKey = "AIzaSyCxccEO0XYetJ2oGRUh7N6EE26buHAdC_o";
   void onError(PlacesAutocompleteResponse response) {
     print("*********Error - ");
     print(response.errorMessage);

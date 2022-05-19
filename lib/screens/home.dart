@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../navigation.dart';
 import '../provider/provider.dart';
+import '../responsive/responsive.dart';
 import '../themes/riva_theme.dart';
 import '../widgets/widgets.dart';
 
@@ -28,26 +29,33 @@ class _HomeScreenState extends State<HomeScreen> {
     await LocationHelper().fetchCurrentLocation(context);
     var lat = Provider.of<AppData>(context, listen: false).currentLatitude;
     var lng = Provider.of<AppData>(context, listen: false).currentLongitude;
-    setState(() {
-      _center = LatLng(lat, lng);
-    });
-    PlacesHelper().initAddress(context);
 
-    if (_center != null) {
-      var pointA = LocationHelper().getRandomLocation(_center, 65);
-      var pointB = LocationHelper().getRandomLocation(_center, 90);
-      var pointC = LocationHelper().getRandomLocation(_center, 150);
-      var pointD = LocationHelper().getRandomLocation(_center, 300);
+    if (mounted) {
+      getSize(context);
+      Future.delayed(const Duration(seconds: 20), () {});
 
       setState(() {
-        _addMarker(LatLng(pointA.latitude, pointA.longitude), "PointA", -50.0);
-        _addMarker(LatLng(pointB.latitude, pointB.longitude), "PointB", 140.40);
-        _addMarker(LatLng(pointC.latitude, pointC.longitude), "PointC", 90.0);
-        _addMarker(LatLng(pointD.latitude, pointD.longitude), "PointD", 210.20);
+        _center = LatLng(lat, lng);
       });
+      PlacesHelper().initAddress(context);
 
-      if (mounted) {
-        setState(() {});
+      Future.delayed(const Duration(seconds: 20), () {});
+
+      if (_center != null) {
+        var pointA = LocationHelper().getRandomLocation(_center, 65);
+        var pointB = LocationHelper().getRandomLocation(_center, 90);
+        var pointC = LocationHelper().getRandomLocation(_center, 150);
+        var pointD = LocationHelper().getRandomLocation(_center, 300);
+
+        setState(() {
+          _addMarker(
+              LatLng(pointA.latitude, pointA.longitude), "PointA", -50.0);
+          _addMarker(
+              LatLng(pointB.latitude, pointB.longitude), "PointB", 140.40);
+          _addMarker(LatLng(pointC.latitude, pointC.longitude), "PointC", 90.0);
+          _addMarker(
+              LatLng(pointD.latitude, pointD.longitude), "PointD", 210.20);
+        });
       }
     }
   }
@@ -55,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Completer<GoogleMapController> _controller = Completer();
   var _center;
   late LatLng _lastMapPosition;
+  var smallScreen = true;
 
   Color btnActiveColor = Colors.indigo;
   Color? btnColor = Colors.blue[50];
@@ -63,6 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
   List cardViews = [true, false];
   String txtActive = "Where do you want to go to?";
   Map<MarkerId, Marker> _markers = {};
+  final txtCurrent = TextEditingController();
+  final txtDestination = TextEditingController();
+
+  BorderRadiusGeometry radius = const BorderRadius.only(
+    topLeft: Radius.circular(24.0),
+    topRight: Radius.circular(24.0),
+  );
 
   // add marker to map
   _addMarker(
@@ -89,9 +105,29 @@ class _HomeScreenState extends State<HomeScreen> {
     _lastMapPosition = position.target;
   }
 
+  _handleGetLocation(int ch) async {
+    var appData = Provider.of<AppData>(context, listen: false);
+    if (ch == 0) {
+      PlacesHelper().handlePressButton(context, 0);
+      print("The selected address ${appData.currentAddress}");
+      setState(() {
+        txtCurrent.text = appData.currentAddress;
+        print("2nd selected address ${appData.currentAddress}");
+      });
+    } else if (ch == 1) {
+      await PlacesHelper().handlePressButton(context, 1);
+      var result = await PlacesHelper().getSetAdr(context, 1);
+      print("======= first result - $result=====");
+      setState(() {
+        txtDestination.text = result;
+      });
+    }
+  }
+
   void _handleShowModal(int ch) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         var appData = Provider.of<AppData>(context, listen: false);
         switch (ch) {
@@ -197,31 +233,50 @@ class _HomeScreenState extends State<HomeScreen> {
             break;
           case 2:
             // logistics modal
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * .7,
-              child: Wrap(
+            var size = MediaQuery.of(context).size;
+            return Container(
+              height: size.height * .9,
+              color: Colors.transparent,
+              child: Column(
                 children: [
-                  ListTile(
-                    leading: Icon(Icons.share),
-                    title: Text('Share'),
+                  Container(
+                    height: size.height * .1,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: radius,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Request Progress',
+                          style: RivaTheme.whiteText.headline4,
+                        ),
+                      ],
+                    ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.copy),
-                    title: Text('Copy Link'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text('Edit'),
-                  ),
+                  Expanded(
+                      child: Container(
+                    color: Colors.white,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          bottom: 0,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('text'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
                 ],
               ),
             );
           case 3:
-            final txtCurrentController = TextEditingController();
-            final txtDestinationController = TextEditingController();
-            txtCurrentController.text = appData.currentAddress;
+            txtCurrent.text = appData.currentAddress;
             if (appData.destinationAddress != null) {
-              txtDestinationController.text = appData.destinationAddress;
+              txtDestination.text = appData.destinationAddress;
             }
             return Container(
               height: MediaQuery.of(context).size.height * .7,
@@ -246,18 +301,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: txtField(
                       context,
                       "Current address",
-                      txtCurrentController,
+                      txtCurrent,
                       isPassword: true,
                       hasOnTap: true,
-                      onTap: () async {
-                        PlacesHelper().handlePressButton(context, 0);
-                        print("The selected address ${appData.currentAddress}");
-                        setState(() {
-                          txtCurrentController.text = appData.currentAddress;
-                          print(
-                              "2nd selected address ${appData.currentAddress}");
-                        });
-                      },
+                      onTap: () => _handleGetLocation(0),
                     ),
                   ),
                   ListTile(
@@ -271,18 +318,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: txtField(
                       context,
                       "Destination",
-                      txtDestinationController,
+                      txtDestination,
                       isPassword: true,
                       hasOnTap: true,
-                      onTap: () async {
-                        PlacesHelper().handlePressButton(context, 1);
-                        var result = await PlacesHelper().getSetAdr(context, 1);
-
-                        setState(() {
-                          txtDestinationController.text = result;
-                          print(
-                              "=======2nd destination address ${appData.destinationAddress}");
-                        });
+                      onTap: () {
+                        _handleGetLocation(1);
+                        if (txtDestination.text.isEmpty) {
+                          setState(() {});
+                        }
                       },
                     ),
                   ),
@@ -295,8 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         fixedSize: Size.fromWidth(
                             MediaQuery.of(context).size.width * .5)),
                     onPressed: () => _handleTaxi(
-                      txtCurrentController.text,
-                      txtDestinationController.text,
+                      txtCurrent.text,
+                      txtDestination.text,
                     ),
                     child: Text(
                       "Done",
@@ -372,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomSheet: BottomSheet(
         builder: (BuildContext context) {
           return Container(
-            height: MediaQuery.of(context).size.height * .25,
+            height: MediaQuery.of(context).size.height * vh,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.0),
@@ -393,8 +436,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       primary: Colors.white,
                       fixedSize: Size.fromWidth(
                           MediaQuery.of(context).size.width * .9)),
-                  onPressed: () =>
-                      cardViews[0] ? _handleShowModal(1) : _handleShowModal(2),
+                  onPressed: () => cardViews[0]
+                      ? _handleShowModal(1)
+                      : Navigator.pushNamed(context, logistics),
                   child: Text(
                     txtActive,
                     style: RivaTheme.blueText.headline5,

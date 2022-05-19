@@ -7,6 +7,7 @@ export 'error_msg.dart';
 export 'icon_tile.dart';
 export 'loader_widget.dart';
 export 'phone_number.dart';
+export 'progress_tabview.dart';
 export 'ratings_comment.dart';
 export 'ratings_widget.dart';
 export 'riva_appbar.dart';

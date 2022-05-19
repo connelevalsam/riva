@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../responsive/responsive.dart';
 import '../themes/riva_theme.dart';
 import '../widgets/widgets.dart';
 
@@ -23,8 +24,9 @@ class DriverArrived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    Future.delayed(const Duration(seconds: 20), () {});
     return Container(
-      height: size.height * .3,
+      height: size.height * vh,
       width: size.width,
       decoration: BoxDecoration(
         borderRadius: radius,
